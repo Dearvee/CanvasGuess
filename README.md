@@ -7,15 +7,19 @@ it is a canvas in html5。（当然，作为jsp课程作业，后来多少是要
 
 ### 1.碰壁
 ###### 经过测试初步思路，大的方向是正确的，但，并不是简单的由mousedown向mousemove划线。试验之后，它的效果是这样的：
-![image](http://10.11.0.19:3000/1884140208/canvas/raw/master/explainImag/1.gif)
+![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/1.gif)
 ###### 显然，这已经不是一个画板。
 
 
 ### 2.尝试实时更新begin坐标
 ###### 尝试在每次mousemove触发时，更新画笔的初始点，而不像初步思路中，初始点始终为mousedown坐标。得到下面的效果：
-![image](http://10.11.0.19:3000/1884140208/canvas/raw/master/explainImag/2.gif)
+![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/2.gif)
 ###### 虽然还不是很友好，但相较上一个版本更像是理想中的画板了。
 ### 3.修复2中第二笔，开始画时，自动连接第一笔的末端
 ###### 即：
-![image](http://10.11.0.19:3000/1884140208/canvas/raw/master/explainImag/3.gif)
+![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/3.gif)
 ###### 显然，这是因为在不允许划线的时候仍要更新begin坐标，又是begin坐标搞的鬼。更新之后。即得到粗糙画板，由于展示的图片可能较多，这里就不再展示正确逻辑的gif。
+
+### 4.添加websocket交互后，实现CanvasGuess雏形
+具体实现过程见(http://www.dearvee.com)Essay-学习效率这么低?
+![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/4.gif)
