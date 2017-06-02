@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Canvas Edit</title>
+    <title>CanvasGuess</title>
     <style>
         html{
             width: 100%;
@@ -24,7 +24,7 @@
             text-shadow: 0 0 10px #ddd;
             user-select: none;
         }
-        h2{
+        body>h2{
             display: block;
             width: 600px;
             height: 50px;
@@ -42,33 +42,7 @@
             background: #eee;
             float: left;
             box-shadow: 2px 2px 10px #ddd;
-            cursor: url("webs/12.png"),auto;
-        }
-        .login{
-            width: 400px;
-            height: 200px;
-            background: #ddd;
-            position:absolute;
-            left:35%;
-            top: 35%;
-            color: #ffffff;
-            box-shadow:2px 2px 4px #333;
-            text-shadow: 1px 1px 4px #ffffff;
-            display: none;
-        }
-        .form{
-            position:absolute;
-            top: 30%;
-            left: 10%;
-            text-shadow: 1px 1px 4px #ffffff;
-        }
-        .label{
-            display: inline-block;
-            width: 80px;
-            text-align: right;
-        }
-        .input{
-            width: 150px;
+            cursor: url("webs/pen.png"),auto;
         }
         .edit{
             height:650px;
@@ -158,8 +132,8 @@
                 $("#canvas").bind("click", function (ec) {
                     if (first) {
                         beginX = ec.clientX;
-                        beginY = ec.clientY;
                         endX = ec.clientX;
+                        beginY = ec.clientY;
 
                         endY = ec.clientY;
                         first = false;
@@ -185,19 +159,7 @@
     </script>
 </head>
 <body>
-<!--
-<div class="login">
-    <form action="login.jsp" method="get" class="form">
-        <label class="label">username:</label>
-        <input class="input" type="text" name="user" placeholder="用户名"/>
-        <p>
-            <label class="label">password:</label>
-            <input class="input" type="password" name="password" placeholder="密码"/>
-            <input type="submit"/>
-        <p>
-    </form>
-</div>--><!--login-->
-<h2>这儿是你的世界，你可以安静的作画。右键保存。</h2>
+<h2>个人作画页，你可以安静的作画。右键保存。</h2>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
     <ul class="edit">
@@ -221,6 +183,8 @@
     </ul>
 </div>
 <ul style="position: fixed;left: 0;top: 100px;">
+    <li><a href="webs/login.jsp">Login</a></li>
+    <li><a href="webs/register.jsp">Register</a></li>
     <li><a href="webs/canvas.jsp">Canvas</a></li>
     <li><a href="webs/guess.jsp">Guess</a></li>
 </ul>

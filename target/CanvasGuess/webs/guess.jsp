@@ -7,13 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    Object user=request.getAttribute("user");
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <base href="<%=basePath%>">
     <meta charset="utf-8"/>
     <title>Guess Page</title>
     <style>
@@ -28,7 +26,7 @@
             color: #3366CC;
             text-shadow: 0 0 10px #ddd;
         }
-        h2{
+        body>h2{
             display: block;
             width: 600px;
             height: 50px;
@@ -48,7 +46,34 @@
             float: left;
             box-shadow: 2px 2px 10px #ddd;
         }
+        .chat{
+            width: 400px;
+            height: 400px;
+            background: #dddddd;
+            position: fixed;
+            bottom: 30px;
+            right: 10px;
+        }
+        .chatInfo{
+            width: inherit;
+            height: 280px;
+            background: #cccccc;
+        }
+        .chatEdit{
+            width: inherit;
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+        }
+        .chatEdit input:first-child{
+            height: 25px;
+            width: 250px;
+            color: #3366CC;
+            margin: 5px 5px;
+            font-size: 1em;
+        }
     </style>
+    <script src="webs/jquery-3.2.1.min.js"></script>
     <script type="text/javascript">
         var websocket = null;
 
@@ -67,17 +92,17 @@
 
         //连接成功建立的回调方法
         websocket.onopen = function(event){
-            alert("Start CanvasGuess");
+            //alert("Start CanvasGuess");
         }
 
         //接收到消息的回调方法
         websocket.onmessage = function(event){
-            drawInfo(event.data);
+            messageFilter(event.data);
         }
 
         //连接关闭的回调方法
         websocket.onclose = function(){
-            alert("close CanvasGuess");
+            //alert("close CanvasGuess");
         }
 
         //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -91,17 +116,28 @@
         }
 
         //发送消息
-        function send(){
-            websocket.send(coordinate);
+        function send(info){
+            websocket.send(info);
+        }
+        function messageFilter(message) {//websocket 信息过滤器
+            var type=message.split(":")[0];
+            var user=message.split(":")[1].split(">>")[0];
+            if(type==="draw")
+                drawInfo(message);
+            if(type==="chat") {
+                message=user+" say:<p/>"+message.substring(7+user.length)+"<p/>";
+                $("#chatInfo").html($("#chatInfo").html() + message);
+            }
+            if(type==="guess"){
+                message="<猜画> "+user+">><span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
+                $("#chatInfo").html($("#chatInfo").html() + message);
+            }
+            $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);//滑动滚动条到最底部
         }
     </script>
     <script>
         var drawColor="#000";
         var drawWidth="10";
-        window.onload=function() {
-            ;
-        }
-
         var coordinate="";//coordinate-坐标
 
         function draw(x0, y0, x1, y1) {//画直线
@@ -145,12 +181,55 @@
             return [x0-100, y0-42, x1-100, y1-42];
         }
     </script>
+    <script>
+        window.onload=function() {
+            <%
+            if(user!=null)
+                out.print("addChatEvent();");
+            %>
+        }
+    </script>
+    <script>
+        function addChatEvent() {
+            $("#chatSend").bind("click",function () {
+                send("chat:"+"<%=user%>>>"+$("#inChat").val());
+                $("#inChat").val("");
+            });
+            $("#guessSend").bind("click",function () {
+                send("guess:"+"<%=user%>>>"+$("#inChat").val());
+                $("#inChat").val("");
+            });
+            $("#inChat").bind("keypress",function (event) {
+                if(event.keyCode===13) {
+                    send("chat:"+"<%=user%>>>" + $("#inChat").val());
+                    $("#inChat").val("");
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <h2>猜！猜！猜！</h2>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
 </div>
+<div class="chat">
+    <h3><%
+    if(user==null)
+        out.print("你必须登录才可以参与互动~");
+    else
+        out.print("Welcome "+user);
+    %></h3>
+    <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
+    <div class="chatEdit">
+        <input id="inChat" type="text" name="chatInfo" placeholder="聊天/猜画"/>
+        <input id="chatSend" type="submit" value="聊天"/>
+        <input id="guessSend" type="submit" value="猜画"/>
+    </div>
+</div>
+<ul style="position: fixed;left: 0;top: 100px;">
+    <li><a href="login.jsp">Login</a></li>
+</ul>
 </body>
 </html>
 

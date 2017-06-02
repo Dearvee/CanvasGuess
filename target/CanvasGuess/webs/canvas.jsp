@@ -9,6 +9,9 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    Object user=request.getAttribute("user");
+    if(user==null)
+        out.print("<script>window.location.href=\"../index.jsp\";</script>");
 %>
 <!DOCTYPE html>
 <html>
@@ -27,6 +30,7 @@
             overflow: hidden;
             color: #3366CC;
             text-shadow: 0 0 10px #ddd;
+            user-select: none;
         }
         h2{
             display: block;
@@ -46,33 +50,7 @@
             background: #eee;
             float: left;
             box-shadow: 2px 2px 10px #ddd;
-            cursor: url("webs/12.png"),auto;
-        }
-        .login{
-            width: 400px;
-            height: 200px;
-            background: #ddd;
-            position:absolute;
-            left:35%;
-            top: 35%;
-            color: #ffffff;
-            box-shadow:2px 2px 4px #333;
-            text-shadow: 1px 1px 4px #ffffff;
-            display: none;
-        }
-        .form{
-            position:absolute;
-            top: 30%;
-            left: 10%;
-            text-shadow: 1px 1px 4px #ffffff;
-        }
-        .label{
-            display: inline-block;
-            width: 80px;
-            text-align: right;
-        }
-        .input{
-            width: 150px;
+            cursor: url("webs/pen.png"),auto;
         }
         .edit{
             height:650px;
@@ -88,6 +66,32 @@
         }
         .edit li{
             padding: 5px;
+        }
+        .chat{
+            width: 400px;
+            height: 400px;
+            background: #dddddd;
+            position: fixed;
+            bottom: 30px;
+            right: 10px;
+        }
+        .chatInfo{
+            width: inherit;
+            height: 280px;
+            background: #cccccc;
+        }
+        .chatEdit{
+            width: inherit;
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+        }
+        .chatEdit input:first-child{
+            height: 25px;
+            width: 250px;
+            color: #3366CC;
+            margin: 5px 5px;
+            font-size: 1em;
         }
     </style>
     <script src="webs/jquery-3.2.1.min.js"></script>
@@ -109,17 +113,18 @@
 
         //连接成功建立的回调方法
         websocket.onopen = function(event){
-            alert("Start CanvasGuess");
+            //alert("Start CanvasGuess");
         }
 
         //接收到消息的回调方法
         websocket.onmessage = function(event){
-            drawInfo(event.data);
+            if (event.data.split(":")[0]!=="draw")
+                messageFilter(event.data)
         }
 
         //连接关闭的回调方法
         websocket.onclose = function(){
-            alert("close CanvasGuess");
+            //alert("close CanvasGuess");
         }
 
         //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -133,17 +138,30 @@
         }
 
         //发送消息
-        function send(){
-            websocket.send(coordinate);
+        function send(info){
+            websocket.send(info);
+        }
+
+        function messageFilter(message) {//websocket 信息过滤器
+            var type=message.split(":")[0];
+            var user=message.split(":")[1].split(">>")[0];
+            if(type==="draw")
+                drawInfo(message);
+            if(type==="chat") {
+                message=user+" say:<p/>"+message.substring(7+user.length)+"<p/>";
+                $("#chatInfo").html($("#chatInfo").html() + message);
+            }
+            if(type==="guess"){
+                message="<猜画> "+user+">><span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
+                $("#chatInfo").html($("#chatInfo").html() + message);
+            }
+            $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);
         }
     </script>
     <script>
         var canDraw = false;
         var drawColor="#000";
         var drawWidth="10";
-        window.onload=function() {
-            initDraw();
-        }
         var coordinate="";//coordinate-坐标
 
         function initDraw() {//初始化画笔
@@ -151,7 +169,9 @@
             setDrawType("free");
         }
         function draw(x0, y0, x1, y1) {//画直线
-            coordinate=drawColor+"+"+drawWidth+"+("+parseInt(x0)+","+parseInt(y0)+")"+"("+parseInt(x1)+","+parseInt(y1)+")";
+            coordinate=
+                "draw:"+drawColor+"+"+drawWidth+"+("+parseInt(x0)+","+
+                parseInt(y0)+")"+"("+parseInt(x1)+","+parseInt(y1)+")";
             var co=toCanvasCo(x0,y0,x1,y1);
             x0=co[0];y0=co[1];x1=co[2];y1=co[3];
             var canvas = document.getElementById("canvas");
@@ -189,7 +209,7 @@
                     $("#canvas").bind("mousemove", function (em) {
                         if (canDraw) {
                             draw(beginX, beginY, em.clientX, em.clientY);
-                            send();
+                            send(coordinate);
                             beginX = em.clientX;
                             beginY = em.clientY;
                         }
@@ -221,7 +241,7 @@
                         first = true;
                     }
                     draw(beginX, beginY, endX, endY);
-                    send();
+                    send(coordinate);
                 });
             }
         }
@@ -258,20 +278,27 @@
             return [x0-100, y0-50, x1-100, y1-50];
         }
     </script>
+    <script>
+        window.onload=function() {
+            initDraw();
+            $("#chatSend").bind("click",function () {
+                send("chat:"+"<%=user%>>>"+$("#inChat").val());
+                $("#inChat").val("");
+            });
+            $("#guessSend").bind("click",function () {
+                send("guess:"+"<%=user%>>>"+$("#inChat").val());
+                $("#inChat").val("");
+            });
+            $("#inChat").bind("keypress",function (event) {
+                if(event.keyCode===13) {
+                    send("chat:"+"<%=user%>>>" + $("#inChat").val());
+                    $("#inChat").val("");
+                }
+            });
+        }
+    </script>
 </head>
 <body>
-<!--
-<div class="login">
-    <form action="login.jsp" method="get" class="form">
-        <label class="label">username:</label>
-        <input class="input" type="text" name="user" placeholder="用户名"/>
-        <p>
-            <label class="label">password:</label>
-            <input class="input" type="password" name="password" placeholder="密码"/>
-            <input type="submit"/>
-        <p>
-    </form>
-</div>--><!--login-->
 <h2>你是画家，你说了算。</h2>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
@@ -295,5 +322,15 @@
         </li>
     </ul>
 </div>
+<div class="chat">
+    <h3><%=user%> Show time~</h3>
+    <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
+    <div class="chatEdit">
+        <input id="inChat" type="text" name="chatInfo" placeholder="聊天/猜画"/>
+        <input id="chatSend" type="submit" value="聊天"/>
+        <input id="guessSend" type="submit" value="猜画"/>
+    </div>
+</div>
 </body>
 </html>
+

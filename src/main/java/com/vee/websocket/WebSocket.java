@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class WebSocket {
 
     private Session session;//连接会话
-    private static int OnlineCount=0;
+    public static int OnlineCount=0;
     private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();//每个客户端对应的对象，单一客户端通信则用Map
 
     @OnOpen
