@@ -23,3 +23,5 @@ it is a canvas in html5。（当然，作为jsp课程作业，后来多少是要
 ### 4.添加websocket交互后，实现CanvasGuess雏形
 具体实现过程见(http://www.dearvee.com)Essay-学习效率这么低?
 ![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/4.gif)
+### 5.servlet实现登录注册，另外通过过滤websocket信息，添加聊天窗口
+![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/5.gif)
