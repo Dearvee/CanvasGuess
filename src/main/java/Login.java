@@ -23,10 +23,10 @@ public class Login extends HttpServlet{
         req.setAttribute("returnLogin","");
         if (isTrue(user,password)) {
             req.setAttribute("user",user);
-            if(WebSocket.OnlineCount==0) //空的房间，di
+            //if(WebSocket.OnlineCount==0) //空的房间，di
                 req.getRequestDispatcher("webs/canvas.jsp").forward(req, resp);//转发user和password
-            else
-                req.getRequestDispatcher("webs/guess.jsp").forward(req,resp);
+            //else
+                //req.getRequestDispatcher("webs/guess.jsp").forward(req,resp);
         }
         else {
             req.setAttribute("returnLogin", this.returnMessage);

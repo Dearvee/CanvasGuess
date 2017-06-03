@@ -100,7 +100,8 @@
 
         //判断当前浏览器是否支持WebSocket
         if('WebSocket' in window){
-            websocket = new WebSocket("ws://localhost:8080/WebSocket");//建立连接
+            <%String room=request.getParameter("room");%>
+            websocket = new WebSocket("ws://localhost:8080/WebSocket/"+"<%=room%>");//建立连接
         }
         else{
             alert('Not support WebSocket')
@@ -245,34 +246,11 @@
                 });
             }
         }
-
         function selDrawType() {
             var events=event.srcElement.id;
             alert(events);
             $("#canvas").unbind();
             setDrawType(events);
-        }
-
-        function drawInfo(info) {
-            var strokes=info.split("*");//每一笔
-            for(var i=0;i<strokes.length;i++){
-                var operate=strokes[i].split("+");//每一笔的属性,包括color，width，coordinate
-                drawColor=operate[0];
-                drawWidth=operate[1];
-                var co=coToArray(operate[2]);
-                draw(co[0],co[1],co[2],co[3]);
-            }
-        }
-        function coToArray(coordinate) {
-            var coors=coordinate.match(/\(\d+,\d+\)/g);
-            var co0,co1;
-            co0=[coors[0].split(",")[0].substr(1),
-                coors[0].split(",")[1].
-                substr(0,coors[0].split(",")[1].length-1)];
-            co1=[coors[1].split(",")[0].substr(1),
-                coors[1].split(",")[1].
-                substr(0,coors[1].split(",")[1].length-1)];
-            return [co0[0],co0[1],co1[0],co1[1]];
         }
         function toCanvasCo(x0,y0,x1,y1) {//100 50 相对画板坐标
             return [x0-100, y0-50, x1-100, y1-50];
