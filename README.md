@@ -25,3 +25,5 @@ it is a canvas in html5。（当然，作为jsp课程作业，后来多少是要
 ![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/4.gif)
 ### 5.servlet实现登录注册，另外通过过滤websocket信息，添加聊天窗口
 ![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/5.gif)
+### 6.从CopyOnWriteArraySet<WebSocket>到HashMap<Integer,CopyOnWriteArraySet<WebSocket>> 
+###### 此类型的改变 ，增加了多放房间操作功能，每个房间对应一个CopyOnWriteArraySet<WebSocket>
