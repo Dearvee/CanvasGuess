@@ -23,6 +23,7 @@
             color: #3366CC;
             text-shadow: 0 0 10px #ddd;
             user-select: none;
+            background: url("webs/back.png");
         }
         body>h2{
             display: block;
@@ -183,10 +184,7 @@
     </ul>
 </div>
 <ul style="position: fixed;left: 0;top: 100px;">
-    <li><a href="webs/login.jsp">Login</a></li>
-    <li><a href="webs/register.jsp">Register</a></li>
-    <li><a href="webs/canvas.jsp">Canvas</a></li>
-    <li><a href="webs/guess.jsp">Guess</a></li>
+    <li><a href="webs/room.jsp">房间</a></li>
 </ul>
 </body>
 </html>

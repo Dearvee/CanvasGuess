@@ -4,7 +4,8 @@
  */
 public class Test {
     public static void main(String [] args){
-        String email="dearvee@";
-        System.out.println(email.matches("(.*)@.(.*).(.*)"));
+        String reg = "[0-9]+";
+        boolean isNum ="12345f6".matches(reg);
+        System.out.println(isNum);
     }
 }

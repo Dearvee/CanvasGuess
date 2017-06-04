@@ -14,44 +14,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint("/WebSocket/{roomID}")
+@ServerEndpoint("/WebSocket/{roomID}/{userID}")
 public class WebSocket {
     private Session session;//连接会话
     public static int OnlineCount=0;
-    private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();//每个客户端对应的对象，单一客户端通信则用Map
+    public static int roomID=0;
+    //private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();//每个客户端对应的对象，单一客户端通信则用Map
 
-    private void addMap(@PathParam("roomID") int roomID) {
-        if(WebSocket.map.get(roomID)==null) {
-            System.out.println(" 第一次进入房间 "+roomID);
-            CopyOnWriteArraySet<WebSocket> current = new CopyOnWriteArraySet<WebSocket>();
-            current.add(this);
-            WebSocket.map.put(roomID, current);
-        }
-        else {
-            System.out.print(" 非第一次次进入房间 "+roomID);
-            WebSocket.map.get(roomID).add(this);
-            System.out.println(" 房间目前在线人数 "+WebSocket.map.get(roomID).size());
-        }
-    }
-
-    private void removeMap(@PathParam("roomID") int roomID) {
-            System.out.print(" 离开房间 "+roomID);
-            WebSocket.map.get(roomID).remove(this);
-            System.out.println(" 房间目前在线人数 "+WebSocket.map.get(roomID).size());
-    }
-
-    private static HashMap<Integer,CopyOnWriteArraySet<WebSocket>>  map= new HashMap<Integer, CopyOnWriteArraySet<WebSocket>>();
+    public static HashMap<Integer,CopyOnWriteArraySet<WebSocket>>  map= new HashMap<Integer, CopyOnWriteArraySet<WebSocket>>();
+    public static HashMap<Integer,String> roomAdmin = new HashMap<Integer,String>();
     @OnOpen
-    public void onOpen(@PathParam("roomID") int roomID,Session session){
+    public void onOpen(@PathParam("roomID") int roomID,@PathParam("userID") String userID,Session session){
         this.session=session;
-        addMap(roomID);
+        addMap(roomID,userID);
         addOnlineCount();//增加在线人数
         //System.out.println(roomID+"新的加入！"+getOnlineCount());
     }
     @OnClose
     public void onClose(@PathParam("roomID") int roomID){
         removeMap(roomID);
-        //subOnlineCount();//减少在线人数
+        subOnlineCount();//减少在线人数
         //System.out.println("新的下线！"+getOnlineCount());
     }
     @OnError
@@ -84,5 +66,32 @@ public class WebSocket {
     }
     private int getOnlineCount(){
         return OnlineCount;
+    }
+
+    public void addMap(@PathParam("roomID") int roomID,@PathParam("userID") String userID) {
+        if(WebSocket.map.get(roomID)==null) {
+            roomAdmin.put(roomID,userID);//创建房间的用户为房主
+            this.roomID=roomID;
+            System.out.println(" 第一次进入房间 "+roomID);
+            CopyOnWriteArraySet<WebSocket> current = new CopyOnWriteArraySet<WebSocket>();
+            current.add(this);
+            WebSocket.map.put(roomID, current);
+        }
+        else {
+            System.out.print(" 非第一次次进入房间 "+roomID);
+            WebSocket.map.get(roomID).add(this);
+            System.out.println(" 房间目前在线人数 "+WebSocket.map.get(roomID).size());
+        }
+    }
+
+    private void removeMap(@PathParam("roomID") int roomID) {
+        System.out.print(" 离开房间 "+roomID);
+        WebSocket.map.get(roomID).remove(this);
+        if(WebSocket.map.get(roomID).size()==0) {//空的房间清除房间
+            WebSocket.map.remove(roomID);
+            WebSocket.roomAdmin.remove(roomID);
+            subOnlineCount();
+        }
+        System.out.println(" 房间目前在线人数 "+WebSocket.map.get(roomID).size());
     }
 }

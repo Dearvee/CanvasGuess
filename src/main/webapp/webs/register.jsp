@@ -10,6 +10,9 @@
 <head>
     <title>Login CanvasGuess</title>
     <style>/*注册*/
+    body{
+        background: url("webs/back.png");
+    }
     #login{
         width: 480px;
         height: 320px;

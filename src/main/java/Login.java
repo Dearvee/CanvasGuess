@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -20,11 +21,14 @@ public class Login extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String user = req.getParameter("user");
         String password = req.getParameter("password");
+        String out = req.getParameter("out");
         req.setAttribute("returnLogin","");
+        HttpSession session=req.getSession();//返回与当前req关联的session
         if (isTrue(user,password)) {
-            req.setAttribute("user",user);
+            //req.setAttribute("loginUser",user);
+            session.setAttribute("user",user);
             //if(WebSocket.OnlineCount==0) //空的房间，di
-                req.getRequestDispatcher("webs/canvas.jsp").forward(req, resp);//转发user和password
+                req.getRequestDispatcher("webs/room.jsp").forward(req, resp);//转发user和password
             //else
                 //req.getRequestDispatcher("webs/guess.jsp").forward(req,resp);
         }
@@ -43,6 +47,7 @@ public class Login extends HttpServlet{
         }
         if(map.size()==0) {//不存在的用户名
             this.returnMessage="不存在的用户名！";
+
             return false;
         }
         if(!map.get("password").equals(password)) {//密码错误

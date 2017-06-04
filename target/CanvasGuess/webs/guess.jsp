@@ -1,3 +1,4 @@
+<%@ page import="com.vee.websocket.WebSocket" %>
 <%--
   Created by IntelliJ IDEA.
   User: Dearvee
@@ -7,7 +8,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Object user=request.getAttribute("user");
+    Object user=session.getAttribute("user");
+    String roomID=request.getParameter("roomID");
+    String userID=request.getParameter("userID");
+
+    if(roomID==null)
+        out.print("<script>window.location.href=\"room.jsp\";</script>");
+    else {
+        String reg = "[0-9]*";
+        boolean isNum = roomID.matches(reg);
+        if (!isNum)//room参数是否为数字
+            out.print("<script>window.location.href=\"room.jsp\";</script>");
+        else if (roomID.equals("") || WebSocket.map.get(Integer.parseInt(roomID)) == null)//判断房间是否存在
+            out.print("<script>window.location.href=\"room.jsp\";</script>");
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -25,13 +39,13 @@
             overflow: hidden;
             color: #3366CC;
             text-shadow: 0 0 10px #ddd;
+            background: url("back.png");
         }
         body>h2{
             display: block;
             width: 600px;
             height: 50px;
             margin: 0 auto;
-            font-weight: inherit;
             text-align: center;
             user-select: none;
         }
@@ -46,31 +60,42 @@
             float: left;
             box-shadow: 2px 2px 10px #ddd;
         }
+        .edit{
+            height:650px;
+            width: 320px;
+            display: inline-block;
+            position: absolute;
+            user-select: none;
+            padding: 0;
+            margin: 0 10px;
+            border: 2px #eeeeee solid;
+            list-style: none;
+            box-shadow: 0 0 10px #ddd;
+        }
+        .edit li{
+            padding: 5px;
+        }
         .chat{
-            width: 400px;
-            height: 400px;
-            background: #dddddd;
-            position: fixed;
-            bottom: 30px;
-            right: 10px;
+            width: inherit;
+            position: absolute;
+            bottom: 0;
+            color: #666666;
         }
         .chatInfo{
             width: inherit;
             height: 280px;
-            background: #cccccc;
+            background: #f8f8f8;
         }
         .chatEdit{
             width: inherit;
             height: 50px;
-            position: absolute;
-            bottom: 0;
+            padding: 0;
         }
         .chatEdit input:first-child{
-            height: 25px;
-            width: 250px;
-            color: #3366CC;
-            margin: 5px 5px;
             font-size: 1em;
+        }
+        #userID{
+            color: #5facfd;
         }
     </style>
     <script src="jquery-3.2.1.min.js"></script>
@@ -79,8 +104,7 @@
 
         //判断当前浏览器是否支持WebSocket
         if('WebSocket' in window){
-            <%String room=request.getParameter("room");%>
-            websocket = new WebSocket("ws://localhost:8080/WebSocket/"+"<%=room%>");//建立连接
+            websocket = new WebSocket("ws://localhost:8080/WebSocket/"+"<%=roomID%>/"+"<%=userID%>");//建立连接
         }
         else{
             alert('Not support WebSocket')
@@ -126,11 +150,11 @@
             if(type==="draw")
                 drawInfo(message);
             if(type==="chat") {
-                message=user+" say:<p/>"+message.substring(7+user.length)+"<p/>";
+                message="<span id='userID'>"+user+"</span> : "+message.substring(7+user.length)+"<p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             if(type==="guess"){
-                message="<猜画> "+user+">><span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
+                message="<猜画> <span id='userID'>"+user+" : </span>>><span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);//滑动滚动条到最底部
@@ -183,10 +207,9 @@
     <script>
         window.onload=function() {
             <%
-            //if(user!=null)
-                //out.print("addChatEvent();");
+            if(user!=null)
+                out.print("addChatEvent();");
             %>
-            addChatEvent();
         }
     </script>
     <script>
@@ -209,23 +232,22 @@
     </script>
 </head>
 <body>
-<h2>猜！猜！猜！</h2>
+<h2>房间号: <%=roomID%> 作画者: <%
+    if(roomID!=null)
+    out.println(WebSocket.roomAdmin.get(Integer.parseInt(roomID)));%></h2>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
-</div>
-<div class="chat">
-    <h3><%
-    if(user==null)
-        out.print("你必须登录才可以参与互动~");
-    else
-        out.print("Welcome "+user);
-    %></h3>
-    <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
-    <div class="chatEdit">
-        <input id="inChat" type="text" name="chatInfo" placeholder="聊天/猜画"/>
-        <input id="chatSend" type="submit" value="聊天"/>
-        <input id="guessSend" type="submit" value="猜画"/>
-    </div>
+    <ul class="edit">
+        <div class="chat">
+            <h3><%=user%> Show time~</h3>
+            <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
+            <div class="chatEdit">
+                <input id="inChat" type="text" name="chatInfo" placeholder="聊天/猜画"/>
+                <input id="chatSend" type="submit" value="聊天"/>
+                <input id="guessSend" type="submit" value="猜画"/>
+            </div>
+        </div>
+    </ul>
 </div>
 <ul style="position: fixed;left: 0;top: 100px;">
     <li><a href="login.jsp">Login</a></li>
