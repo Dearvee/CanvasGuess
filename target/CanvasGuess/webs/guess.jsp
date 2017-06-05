@@ -232,8 +232,8 @@
     </script>
 </head>
 <body>
-<h2>房间号: <%=roomID%> 作画者: <%
-    if(roomID!=null)
+<h2>Room: <%=roomID%> Owner: <%
+    if(roomID!=null&&!roomID.equals(""))
     out.println(WebSocket.roomAdmin.get(Integer.parseInt(roomID)));%></h2>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
@@ -242,9 +242,9 @@
             <h3><%=user%> Show time~</h3>
             <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
             <div class="chatEdit">
-                <input id="inChat" type="text" name="chatInfo" placeholder="聊天/猜画"/>
-                <input id="chatSend" type="submit" value="聊天"/>
-                <input id="guessSend" type="submit" value="猜画"/>
+                <input id="inChat" type="text" name="chatInfo" placeholder="Say/Guess"/>
+                <input id="chatSend" type="submit" value="Say"/>
+                <input id="guessSend" type="submit" value="Guess"/>
             </div>
         </div>
     </ul>

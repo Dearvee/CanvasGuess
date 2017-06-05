@@ -25,6 +25,8 @@
     for(int key:WebSocket.roomAdmin.keySet())
         if(roomID==null||WebSocket.roomAdmin.get(key).equals(user))//该房主已经创建一个房间，一用户最多一房间。
             out.print("<script>window.location.href=\"room.jsp\";</script>");
+    if(roomID==null||WebSocket.Answer.get(Integer.parseInt(roomID))==null)
+        request.getRequestDispatcher("answer.jsp").forward(request,response);
 %>
 <!DOCTYPE html>
 <html>
@@ -288,34 +290,34 @@
     </script>
 </head>
 <body>
-<h2>房间号: <%=roomID%> 作画者: <%=userID%></h2>
+<h2>Room: <%=roomID%> Owner: <%=userID%></h2>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
     <ul class="edit">
         <li>
             <ul style="list-style: none;padding: 0;" onclick="selDrawType();">
-                <li>形状</li>
+                <li>Shape</li>
                 <p>
                 <li id="free" style="display: inline;background: #eee;cursor: pointer;">Free</li>
                 <li id="line" style="display: inline;background: #eee;cursor: pointer;">Line</li>
             </ul>
         </li>
         <li>
-            <label>宽度:</label>
+            <label>Width:</label>
             <input type="range" id="drawWidth" value="10" min="1" max="100"/>
             <span id="viewDWidth">10</span>
         </li>
         <li>
-            <label>颜色:</label>
+            <label>Color:</label>
             <input type="color" id="drawColor"/>
         </li>
             <div class="chat">
                 <h3><%=user%> Show time~</h3>
                 <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
                 <div class="chatEdit">
-                    <input id="inChat" type="text" name="chatInfo" placeholder="聊天/猜画"/>
-                    <input id="chatSend" type="submit" value="聊天"/>
-                    <input id="guessSend" type="submit" value="猜画"/>
+                    <input id="inChat" type="text" name="chatInfo" placeholder="Say/Guess"/>
+                    <input id="chatSend" type="submit" value="Say"/>
+                    <input id="guessSend" type="submit" value="Guess"/>
                 </div>
             </div>
     </ul>

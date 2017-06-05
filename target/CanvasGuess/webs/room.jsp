@@ -80,21 +80,21 @@
         <span><a href="webs/login.jsp">Login</a></span>
         </h3>
         <form action="webs/guess.jsp">
-            <input type="text" name="roomID"/>
-            <input type="submit" value="进入房间"/>
+            <input type="text" name="roomID" placeholder="roomID"/>
+            <input type="submit" value="Come into"/>
         </form>
     </div>
 <ul style="list-style: none;">
     <li>
         <%String createUrl="webs/canvas.jsp?roomID="+(WebSocket.map.size()+1)+"&userID="+user;%>
-        <a class="room" href="<%=createUrl%>" style="line-height: 80px;font-size: 1.3em;">+创建房间</a>
+        <a class="room" href="<%=createUrl%>" style="line-height: 80px;font-size: 1.3em;">+Create room</a>
     </li>
     <%
-    for(int room=0;room<WebSocket.map.size();room++){//输出房间总数
-        out.println("<li><a href=\""+"webs/guess.jsp?roomID="+(room+1)+"&userID="+WebSocket.roomAdmin.get(room+1)+"\" class=\"room\">" +
-                "<div id='roomID'>Room: "+(room+1)+"&nbsp;&nbsp;&nbsp;&nbsp; " +
-                "Owner: "+WebSocket.roomAdmin.get(room+1)+"</div>" +
-                "在线人数: "+WebSocket.map.get(room+1).size()+"</a></li>");
+    for(int room:WebSocket.map.keySet()){//output all room
+        out.println("<li><a href=\""+"webs/guess.jsp?roomID="+(room)+"&userID="+WebSocket.roomAdmin.get(room)+"\" class=\"room\">" +
+                "<div id='roomID'>Room: "+(room)+"&nbsp;&nbsp;&nbsp;&nbsp; " +
+                "Owner: "+WebSocket.roomAdmin.get(room)+"</div>" +
+                "Online: "+WebSocket.map.get(room).size()+"</a></li>");
     }
     %>
 </ul>

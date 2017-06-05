@@ -21,8 +21,9 @@ public class WebSocket {
     public static int roomID=0;
     //private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();//每个客户端对应的对象，单一客户端通信则用Map
 
-    public static HashMap<Integer,CopyOnWriteArraySet<WebSocket>>  map= new HashMap<Integer, CopyOnWriteArraySet<WebSocket>>();
-    public static HashMap<Integer,String> roomAdmin = new HashMap<Integer,String>();
+    public static HashMap<Integer,CopyOnWriteArraySet<WebSocket>>  map= new HashMap<Integer, CopyOnWriteArraySet<WebSocket>>();//每个room对应一个客户端集合
+    public static HashMap<Integer,String> roomAdmin = new HashMap<Integer,String>();//每个room对应一个房主
+    public static HashMap<Integer,String> Answer = new HashMap<Integer,String>();//每个room对应的answer
     @OnOpen
     public void onOpen(@PathParam("roomID") int roomID,@PathParam("userID") String userID,Session session){
         this.session=session;
@@ -33,7 +34,7 @@ public class WebSocket {
     @OnClose
     public void onClose(@PathParam("roomID") int roomID){
         removeMap(roomID);
-        subOnlineCount();//减少在线人数
+        //subOnlineCount();//减少在线人数
         //System.out.println("新的下线！"+getOnlineCount());
     }
     @OnError
@@ -90,8 +91,16 @@ public class WebSocket {
         if(WebSocket.map.get(roomID).size()==0) {//空的房间清除房间
             WebSocket.map.remove(roomID);
             WebSocket.roomAdmin.remove(roomID);
-            subOnlineCount();
         }
-        System.out.println(" 房间目前在线人数 "+WebSocket.map.get(roomID).size());
+        subOnlineCount();
+        //System.out.println(" 房间目前在线人数 "+WebSocket.map.get(roomID).size());
+    }
+
+    public static void setAnswer(@PathParam("roomID") int roomID,String answer) {//设置房间答案
+        Answer.put(roomID,answer);
+    }
+
+    public static String getAnswer(@PathParam("roomID") int roomID) {//获得房间答案
+        return Answer.get(roomID);
     }
 }

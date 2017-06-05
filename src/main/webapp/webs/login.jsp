@@ -89,9 +89,9 @@
         <h2>Login CanvasGuess</h2>
         <form action="/Login">
             <label class="label" for="in_user">Name:</label>
-            <input class="in" id="in_user" placeholder="用户名" name="user" type="text" />
+            <input class="in" id="in_user" placeholder="username" name="user" type="text" />
             <label class="label" style="top: 145px;" for="in_password">Password:</label>
-            <input class="in" id="in_password" placeholder="密码" style="top: 130px;" name="password" type="password"/>
+            <input class="in" id="in_password" placeholder="password" style="top: 130px;" name="password" type="password"/>
             <input id="sub" type="submit" value="login"/>
             <div class="tip"><%=request.getAttribute("returnLogin")%></div>
         </form>

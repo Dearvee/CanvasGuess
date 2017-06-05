@@ -88,13 +88,13 @@
         <h2>Register CanvasGuess</h2>
         <form action="/Register">
             <label class="label" for="in_user">Name:</label>
-            <input class="in" id="in_user" placeholder="用户名" name="user" type="text" />
+            <input class="in" id="in_user" placeholder="username" name="user" type="text"/>
             <label class="label" style="top: 145px;" for="in_password">Password:</label>
-            <input class="in" id="in_password" placeholder="密码" style="top: 130px;" name="password" type="password"/>
+            <input class="in" id="in_password" placeholder="password" style="top: 130px;" name="password" type="password"/>
             <label class="label" style="top: 195px;" for="in_repassword">RePassword:</label>
-            <input class="in" id="in_repassword" placeholder="重复密码" style="top: 180px;" name="repassword" type="password"/>
+            <input class="in" id="in_repassword" placeholder="repassword" style="top: 180px;" name="repassword" type="password"/>
             <label class="label" style="top: 245px;" for="in_email">Email:</label>
-            <input class="in" id="in_email" placeholder="邮箱" style="top: 230px;" name="email" type="text"/>
+            <input class="in" id="in_email" placeholder="email" style="top: 230px;" name="email" type="text"/>
             <input id="sub" type="submit" value="Submit"/>
             <div class="tip"><%=request.getAttribute("returnRegister")%></div>
         </form>
