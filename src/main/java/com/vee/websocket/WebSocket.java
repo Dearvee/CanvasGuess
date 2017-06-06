@@ -45,15 +45,16 @@ public class WebSocket {
     @OnMessage
     public void onMessage(@PathParam("roomID") int roomID,String message,Session session){
         //信息改变，向每一个终端发送信息
-        System.out.println("发出的消息:"+message);
+        String result=Flower(message,roomID);
         for (WebSocket webSocket:map.get(roomID)) {
             try {
-                webSocket.sendMessage(message);//向每一个终端发送message
+                webSocket.sendMessage(message+result);
             }
             catch (IOException e){
                 e.printStackTrace();
             }
         }
+        System.out.println("发出的消息:"+message+result);
     }
 
     private void sendMessage(String message) throws IOException{
@@ -91,6 +92,7 @@ public class WebSocket {
         if(WebSocket.map.get(roomID).size()==0) {//空的房间清除房间
             WebSocket.map.remove(roomID);
             WebSocket.roomAdmin.remove(roomID);
+            WebSocket.setAnswer(roomID,null);
         }
         subOnlineCount();
         //System.out.println(" 房间目前在线人数 "+WebSocket.map.get(roomID).size());
@@ -102,5 +104,20 @@ public class WebSocket {
 
     public static String getAnswer(@PathParam("roomID") int roomID) {//获得房间答案
         return Answer.get(roomID);
+    }
+
+    public static String Flower(String message,@PathParam("roomID") int roomID){
+        String result="";
+        if (message.split(":")[0].equals("guess")){
+            if(message.split(">>")[1].equals(getAnswer(roomID))) {//判断是否回答正确
+                System.out.println(message.split(":")[1].split(">>")[0] + " accepted");
+                System.out.println("Flower +3");
+                result = "</p>[Flower +3]";
+            }
+            else{
+                result="</p>Wrong";
+            }
+        }
+        return result;
     }
 }

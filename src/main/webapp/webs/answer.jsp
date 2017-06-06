@@ -1,4 +1,4 @@
-<%@ page import="com.vee.websocket.WebSocket" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Dearvee
   Date: 2017/6/6
@@ -8,25 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Set Answer</title>
-    <script>
-        window.onload=function () {
-            document.getElementById("answerSet").
-            addEventListener("click",function () {
-                <%
-                String roomID=request.getParameter("roomID");
-                if(WebSocket.getAnswer(Integer.parseInt(roomID))==null){
-                    WebSocket.setAnswer(Integer.parseInt(roomID),"123");
-                    System.out.println("set answer 123 success");
-                    }
-                %>
-
-            });
-        }
-    </script>
+    <meta charset="utf-8"/>
+    <title>Set setAnswer</title>
 </head>
 <body>
-<input id="answerIn" type="text" placeholder="Answer"/>
-<input id="answerSet" type="submit"/>
+
+<form action="/setAnswer">
+    <input name="roomID" type="text" value="<%=request.getParameter("roomID")%>" hidden>
+    <input name="userID" type="text" value="<%=request.getParameter("userID")%>" hidden>
+    <input name="answer" type="text" placeholder="setAnswer"/>
+    <input type="submit"/>
+</form>
 </body>
 </html>

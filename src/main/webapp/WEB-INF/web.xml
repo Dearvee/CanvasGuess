@@ -21,4 +21,13 @@
     <servlet-name>Register</servlet-name>
     <url-pattern>/Register</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>setAnswer</servlet-name>
+    <servlet-class>setAnswer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>setAnswer</servlet-name>
+    <url-pattern>/setAnswer</url-pattern>
+  </servlet-mapping>
 </web-app>

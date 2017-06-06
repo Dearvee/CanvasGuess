@@ -150,11 +150,11 @@
             if(type==="draw")
                 drawInfo(message);
             if(type==="chat") {
-                message="<span id='userID'>"+user+"</span> : "+message.substring(7+user.length)+"<p/>";
+                message="[<span id='userID'>"+user+"</span>] : "+message.substring(7+user.length)+"<p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             if(type==="guess"){
-                message="<猜画> <span id='userID'>"+user+" : </span>>><span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
+                message="[猜画] [<span id='userID'>"+user+"</span>] : <span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);//滑动滚动条到最底部

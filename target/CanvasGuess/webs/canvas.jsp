@@ -25,8 +25,9 @@
     for(int key:WebSocket.roomAdmin.keySet())
         if(roomID==null||WebSocket.roomAdmin.get(key).equals(user))//该房主已经创建一个房间，一用户最多一房间。
             out.print("<script>window.location.href=\"room.jsp\";</script>");
-    if(roomID==null||WebSocket.Answer.get(Integer.parseInt(roomID))==null)
-        request.getRequestDispatcher("answer.jsp").forward(request,response);
+    if(roomID!=null&&WebSocket.Answer.get(Integer.parseInt(roomID))==null) {
+        out.print("<script>window.location.href=\"answer.jsp?roomID="+roomID+"&userID="+userID+"\";</script>");
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -53,7 +54,6 @@
             width: 600px;
             height: 50px;
             margin: 0 auto;
-            font-weight: inherit;
             text-align: center;
         }
         .board{
@@ -162,11 +162,11 @@
             if(type==="draw")
                 drawInfo(message);
             if(type==="chat") {
-                message="<span id='userID'>"+user+":</span> "+message.substring(7+user.length)+"<p/>";
+                message="[<span id='userID'>"+user+"</span>] : "+message.substring(7+user.length)+"<p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             if(type==="guess"){
-                message="<猜画> <span id='userID'>"+user+"</span>>><span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
+                message="[猜画] [<span id='userID'>"+user+"</span>] : <span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);
@@ -315,9 +315,8 @@
                 <h3><%=user%> Show time~</h3>
                 <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
                 <div class="chatEdit">
-                    <input id="inChat" type="text" name="chatInfo" placeholder="Say/Guess"/>
+                    <input id="inChat" type="text" name="chatInfo" placeholder="Say"/>
                     <input id="chatSend" type="submit" value="Say"/>
-                    <input id="guessSend" type="submit" value="Guess"/>
                 </div>
             </div>
     </ul>
