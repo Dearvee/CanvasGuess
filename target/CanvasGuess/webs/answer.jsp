@@ -9,11 +9,11 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Set setAnswer</title>
+    <title>Set com.vee.answer.setAnswer</title>
 </head>
 <body>
 
-<form action="/setAnswer">
+<form action="/answer">
     <input name="roomID" type="text" value="<%=request.getParameter("roomID")%>" hidden>
     <input name="userID" type="text" value="<%=request.getParameter("userID")%>" hidden>
     <input name="answer" type="text" placeholder="setAnswer"/>

@@ -25,7 +25,7 @@
             user-select: none;
             background: url("webs/back.png");
         }
-        body>h2{
+        body>h1{
             display: block;
             width: 600px;
             height: 50px;
@@ -160,31 +160,31 @@
     </script>
 </head>
 <body>
-<h2>个人作画页，你可以安静的作画。右键保存。</h2>
+<h1>Free Page</h1>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
     <ul class="edit">
         <li>
             <ul style="list-style: none;padding: 0;" onclick="selDrawType();">
-                <li>形状</li>
+                <li>Shape</li>
                 <p>
                 <li id="free" style="display: inline;background: #eee;cursor: pointer;">Free</li>
                 <li id="line" style="display: inline;background: #eee;cursor: pointer;">Line</li>
             </ul>
         </li>
         <li>
-            <label>宽度:</label>
+            <label>Width:</label>
             <input type="range" id="drawWidth" value="10" min="1" max="100"/>
             <span id="viewDWidth">10</span>
         </li>
         <li>
-            <label>颜色:</label>
+            <label>Color:</label>
             <input type="color" id="drawColor" value="#3366CC"/>
         </li>
     </ul>
 </div>
 <ul style="position: fixed;left: 0;top: 100px;">
-    <li><a href="webs/room.jsp">房间</a></li>
+    <li><a href="webs/room.jsp">Room</a></li>
 </ul>
 </body>
 </html>

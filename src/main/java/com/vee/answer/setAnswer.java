@@ -1,3 +1,5 @@
+package com.vee.answer;
+
 import com.vee.websocket.WebSocket;
 
 import javax.servlet.ServletException;
@@ -20,6 +22,7 @@ public class setAnswer extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
         String answer = req.getParameter("answer");
+        answer=new String(answer.getBytes("ISO-8859-1"),"utf-8");
         String userID = req.getParameter("userID");
         if (req.getParameter("roomID") != null) {
             int roomID = Integer.parseInt(req.getParameter("roomID"));

@@ -3,6 +3,8 @@
  */
 package com.vee.websocket;
 
+import com.vee.sql.MySql;
+
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -112,10 +114,11 @@ public class WebSocket {
             if(message.split(">>")[1].equals(getAnswer(roomID))) {//判断是否回答正确
                 System.out.println(message.split(":")[1].split(">>")[0] + " accepted");
                 System.out.println("Flower +3");
-                result = "</p>[Flower +3]";
+                MySql.updataSql(message.split(":")[1].split(">>")[0]);
+                result = ":Flower";
             }
             else{
-                result="</p>Wrong";
+                result=":Wrong";
             }
         }
         return result;

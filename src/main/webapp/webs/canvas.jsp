@@ -44,17 +44,18 @@
             width:100%;
             height: 100%;
             overflow: hidden;
-            color: #3366CC;
+            color: #666666;
             text-shadow: 0 0 10px #ddd;
             user-select: none;
             background: url("webs/back.png");
         }
-        h2{
+        h1{
             display: block;
             width: 600px;
             height: 50px;
             margin: 0 auto;
             text-align: center;
+            color: #3366CC;
         }
         .board{
             width:1000px;
@@ -92,7 +93,6 @@
         .chatInfo{
             width: inherit;
             height: 280px;
-            color: #000;
             background: #f8f8f8;
         }
         .chatEdit{
@@ -105,7 +105,7 @@
             font-size: 1em;
         }
         #userID{
-            color: #5facfd;
+            color: #3366CC;
         }
     </style>
     <script src="webs/jquery-3.2.1.min.js"></script>
@@ -290,7 +290,7 @@
     </script>
 </head>
 <body>
-<h2>Room: <%=roomID%> Owner: <%=userID%></h2>
+<h1>Room: <%=roomID%> Owner: <%=userID%></h1>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
     <ul class="edit">

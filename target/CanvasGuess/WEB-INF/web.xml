@@ -6,28 +6,28 @@
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>Login</servlet-name>
-    <servlet-class>Login</servlet-class>
+    <servlet-class>com.vee.safe.Login</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
-    <url-pattern>/Login</url-pattern>
+    <url-pattern>/login</url-pattern>
   </servlet-mapping>
 
   <servlet>
     <servlet-name>Register</servlet-name>
-    <servlet-class>Register</servlet-class>
+    <servlet-class>com.vee.safe.Register</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Register</servlet-name>
-    <url-pattern>/Register</url-pattern>
+    <url-pattern>/register</url-pattern>
   </servlet-mapping>
 
   <servlet>
     <servlet-name>setAnswer</servlet-name>
-    <servlet-class>setAnswer</servlet-class>
+    <servlet-class>com.vee.answer.setAnswer</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>setAnswer</servlet-name>
-    <url-pattern>/setAnswer</url-pattern>
+    <url-pattern>/answer</url-pattern>
   </servlet-mapping>
 </web-app>

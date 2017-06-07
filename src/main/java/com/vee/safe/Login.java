@@ -1,4 +1,6 @@
-import com.vee.websocket.WebSocket;
+package com.vee.safe;
+
+import com.vee.sql.MySql;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +42,7 @@ public class Login extends HttpServlet{
     }
     private String returnMessage="";
     private boolean isTrue(String user,String password){
-        HashMap<String,String> map=MySql.selectSql(user);//根据user查询的其他信息
+        HashMap<String,String> map= MySql.selectSql(user);//根据user查询的其他信息
         if(user.equals("")) {//用户名为空
             this.returnMessage="用户名为空！";
             return false;

@@ -37,17 +37,18 @@
             width:100%;
             height: 100%;
             overflow: hidden;
-            color: #3366CC;
+            color: #666666;
             text-shadow: 0 0 10px #ddd;
             background: url("back.png");
         }
-        body>h2{
+        body>h1{
             display: block;
             width: 600px;
             height: 50px;
             margin: 0 auto;
             text-align: center;
             user-select: none;
+            color:#3366CC;
         }
         .board{
             width:1000px;
@@ -79,7 +80,6 @@
             width: inherit;
             position: absolute;
             bottom: 0;
-            color: #666666;
         }
         .chatInfo{
             width: inherit;
@@ -95,7 +95,7 @@
             font-size: 1em;
         }
         #userID{
-            color: #5facfd;
+            color: #3366CC;
         }
     </style>
     <script src="jquery-3.2.1.min.js"></script>
@@ -144,9 +144,11 @@
         function send(info){
             websocket.send(info);
         }
-        function messageFilter(message) {//websocket 信息过滤器
-            var type=message.split(":")[0];
-            var user=message.split(":")[1].split(">>")[0];
+        function messageFilter(message) {//websocket
+            var term=message.split(":");
+            var type=term[0];
+            var user=term[1].split(">>")[0];
+            var answer=term[term.length-1];
             if(type==="draw")
                 drawInfo(message);
             if(type==="chat") {
@@ -155,6 +157,10 @@
             }
             if(type==="guess"){
                 message="[猜画] [<span id='userID'>"+user+"</span>] : <span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
+                if(answer==="Flower")
+                    alert("Flower +3");
+                else
+                    alert("Wrong")
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);//滑动滚动条到最底部
@@ -232,9 +238,9 @@
     </script>
 </head>
 <body>
-<h2>Room: <%=roomID%> Owner: <%
+<h1>Room: <%=roomID%> Owner: <%
     if(roomID!=null&&!roomID.equals(""))
-    out.println(WebSocket.roomAdmin.get(Integer.parseInt(roomID)));%></h2>
+    out.println(WebSocket.roomAdmin.get(Integer.parseInt(roomID)));%></h1>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
     <ul class="edit">

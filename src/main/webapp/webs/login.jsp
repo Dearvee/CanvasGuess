@@ -87,7 +87,7 @@
 <div>
     <div id="login"><!--登录-->
         <h2>Login CanvasGuess</h2>
-        <form action="/Login">
+        <form action="/login">
             <label class="label" for="in_user">Name:</label>
             <input class="in" id="in_user" placeholder="username" name="user" type="text" />
             <label class="label" style="top: 145px;" for="in_password">Password:</label>

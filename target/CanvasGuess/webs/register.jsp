@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login CanvasGuess</title>
+    <title>Register CanvasGuess</title>
     <style>/*注册*/
     body{
         background: url("webs/back.png");
@@ -86,7 +86,7 @@
 <div>
     <div id="login"><!--登录-->
         <h2>Register CanvasGuess</h2>
-        <form action="/Register">
+        <form action="/register">
             <label class="label" for="in_user">Name:</label>
             <input class="in" id="in_user" placeholder="username" name="user" type="text"/>
             <label class="label" style="top: 145px;" for="in_password">Password:</label>
