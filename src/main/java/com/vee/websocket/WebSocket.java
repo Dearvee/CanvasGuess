@@ -26,6 +26,7 @@ public class WebSocket {
     public static HashMap<Integer,CopyOnWriteArraySet<WebSocket>>  map= new HashMap<Integer, CopyOnWriteArraySet<WebSocket>>();//每个room对应一个客户端集合
     public static HashMap<Integer,String> roomAdmin = new HashMap<Integer,String>();//每个room对应一个房主
     public static HashMap<Integer,String> Answer = new HashMap<Integer,String>();//每个room对应的answer
+    public static HashMap<String,Integer> Again = new HashMap<String, Integer>();//每个人的回答次数限制
     @OnOpen
     public void onOpen(@PathParam("roomID") int roomID,@PathParam("userID") String userID,Session session){
         this.session=session;
@@ -108,19 +109,48 @@ public class WebSocket {
         return Answer.get(roomID);
     }
 
+    public static Integer getAgain(String userID) {
+        return Again.get(userID);
+    }
+
+    public static void setAgain(String userID,int value) {
+        Again.put(userID,value);
+    }
+
     public static String Flower(String message,@PathParam("roomID") int roomID){
         String result="";
         if (message.split(":")[0].equals("guess")){
-            if(message.split(">>")[1].equals(getAnswer(roomID))) {//判断是否回答正确
-                System.out.println(message.split(":")[1].split(">>")[0] + " accepted");
-                System.out.println("Flower +3");
-                MySql.updataSql(message.split(":")[1].split(">>")[0]);
-                result = ":Flower";
-            }
-            else{
-                result=":Wrong";
+            String user=getUser(message);
+            changeAgain(user);
+            if(getAgain(user)<=0)
+                result=":Again";
+            else {
+                if (message.split(">>")[1].equals(getAnswer(roomID))) {//判断是否回答正确
+                    System.out.println(message.split(":")[1].split(">>")[0] + " accepted");
+                    System.out.println("Flower +3");
+                    MySql.updataSql(message.split(":")[1].split(">>")[0]);
+                    result = ":Flower";
+                    setAgain(user,0);
+                } else {
+                    result = ":Wrong";
+                }
             }
         }
         return result;
+    }
+
+    public static String getUser(String message){
+        return message.split(":")[1].split(">>")[0];
+    }
+
+    public static void changeAgain(String user){
+        if(getAgain(user)==null) {
+            setAgain(user, 3);
+            System.out.println(user+" init "+3);
+        }
+        else{
+            setAgain(user,getAgain(user)-1);
+            System.out.println(user+" again "+getAgain(user));
+        }
     }
 }

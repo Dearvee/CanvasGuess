@@ -22,6 +22,22 @@
         body{
             background:url("webs/back.png");
             color: #3366CC;
+            margin: 0 0;
+        }
+        h1{
+            display: inline;
+            background: #333333;
+            line-height: 2em;
+            padding: 10px 20px 10px 20px;
+            margin: 0 0;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 1px 1px 10px #333;
+            animation: h1 1s;
+        }
+        @keyframes h1 {
+            0%{padding: 10px 20px 10px 20px;}
+            50%{padding: 10px 50px 10px 50px;}
+            100%{padding: 10px 20px 10px 20px;}
         }
         .room{
             width: 280px;
@@ -35,16 +51,30 @@
             font-family: Lato,"PingFang SC","Microsoft YaHei",sans-serif;
             transition: all 0.3s;
         }
+        a{
+            color: #3366CC;
+            transition: all 0.3s;
+        }
+        a:hover{
+            color: #333;
+        }
         .room:hover{
             background: #f8f8f8;
             transform: scale(1.01);
         }
         #roomID{
             line-height: 2em;
-            background: #3366CC;
             border-radius: 10px 10px 0 0;
-            color: #ffffff;
-            text-shadow: #ddd 0 0 1px;
+            background: #333;
+            border: solid 1px #3366CC;
+            font-family: Lato,"PingFang SC","Microsoft YaHei",sans-serif;
+            transition: all 0.2s;
+            cursor: pointer;
+            color: #3366CC;
+            box-shadow: 0 0 2px #333;
+        }
+        #roomID:hover{
+            box-shadow: 0 0 10px #333;
         }
         ul li{
             float: left;
@@ -53,31 +83,50 @@
             display: inline-block;
             width: 100px;
             height: 60px;
+            color: #3366CC;
             text-decoration: none;
         }
         ul li a:hover {
             text-decoration: underline;
+            color: #3366CC;
         }
         h3 span{
             padding: 10px;
         }
         input:first-child{
             width: 100px;
-            font-size: 1.2em;
+            height:38px;
+            color: #3366CC;
+            font-family: Lato,\"PingFang SC\",\"Microsoft YaHei\",sans-serif;
+            border-radius: 2px;
+            text-indent: 0.3em;
+            border: solid 1px #3366CC;
         }
         input:last-child{
-            font-size: 1.1em;
+            height:38px;
+            background: #333;
+            border: none;
+            font-family: Lato,"PingFang SC","Microsoft YaHei",sans-serif;
+            transition: all 0.2s;
+            border-radius: 2px;
+            cursor: pointer;
+            color: #3366CC;
+            box-shadow: 0 0 2px #333;
+        }
+        input:last-child:hover{
+            box-shadow: 0 0 10px #333;
         }
     </style>
 </head>
 <body>
 <center>
-<h1>CanvasGuess Room</h1>
+    <h1>CanvasGuess Room</h1>
     <div>
         <h3>
-        <span>All room: <%=WebSocket.map.size()%></span>
-        <span>All online: <%=WebSocket.OnlineCount%></span>
-        <span><a href="webs/login.jsp">Login</a></span>
+            <span>All room: <%=WebSocket.map.size()%></span>
+            <span>All online: <%=WebSocket.OnlineCount%></span>
+            <span><a href="webs/login.jsp">Login</a></span>
+            <span><a href="webs/rank.jsp">Rank</a></span>
         </h3>
         <form action="webs/guess.jsp">
             <input type="text" name="roomID" placeholder="roomID"/>
@@ -94,7 +143,7 @@
         out.println("<li><a href=\""+"webs/guess.jsp?roomID="+(room)+"&userID="+WebSocket.roomAdmin.get(room)+"\" class=\"room\">" +
                 "<div id='roomID'>Room: "+(room)+"&nbsp;&nbsp;&nbsp;&nbsp; " +
                 "Owner: "+WebSocket.roomAdmin.get(room)+"</div>" +
-                "Online: "+WebSocket.map.get(room).size()+"</a></li>");
+                "<div style='line-height:2.8em;'>Online: "+WebSocket.map.get(room).size()+"</div></a></li>");
     }
     %>
     <!--<iframe width="300" height="300" src="webs/guess.jsp?roomID=1&userID=123456"></iframe>-->

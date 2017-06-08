@@ -16,14 +16,23 @@
     <style>
         body{
             background: url("back.png");
+            margin: 0 0;
+            color: #3366CC;
         }
         h1{
-            display: block;
-            width: 600px;
-            height: 50px;
-            margin: 0 auto;
-            text-align: center;
-            color:#3366CC;
+            display: inline;
+            background: #333333;
+            line-height: 2em;
+            padding: 10px 20px 10px 20px;
+            margin: 0 0;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 1px 1px 10px #333;
+            animation: h1 1s;
+        }
+        @keyframes h1 {
+            0%{padding: 10px 20px 10px 20px;}
+            50%{padding: 10px 50px 10px 50px;}
+            100%{padding: 10px 20px 10px 20px;}
         }
         table{
             width: 60%;
@@ -40,7 +49,7 @@
             box-shadow: 0 0 3px #333;
         }
         table tr:hover{
-            background: url("back.png") #aaaaaa;
+            background: url("back.png") #333;
             color: #FFFFFF;
         }
         table tr:first-child{
@@ -51,7 +60,9 @@
     </style>
 </head>
 <body>
-<h1>Flower Rank</h1>
+<center>
+    <h1>Flower Rank</h1>
+</center>
 <center>
     <table border="0.8">
         <tr>

@@ -21,21 +21,34 @@
             height: 100%;
             overflow: hidden;
             color: #3366CC;
-            text-shadow: 0 0 10px #ddd;
             user-select: none;
             background: url("webs/back.png");
+            margin:0;
         }
-        body>h1{
-            display: block;
-            width: 600px;
-            height: 50px;
-            margin: 0 auto;
-            font-weight: inherit;
-            text-align: center;
+        h1{
+            display: inline;
+            background: #333333;
+            line-height: 2em;
+            padding: 10px 20px 10px 20px;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 1px 1px 10px #333;
+            animation: h1 1s;
+        }
+        @keyframes h1 {
+            0%{padding: 10px 20px 10px 20px;}
+            50%{padding: 10px 50px 10px 50px;}
+            100%{padding: 10px 20px 10px 20px;}
+        }
+        a{
+            color: #3366CC;
+            transition: all 0.3s;
+        }
+        a:hover{
+            color: #333;
         }
         .board{
             width:1000px;
-            margin: 0 100px;
+            margin: 10px 100px;
         }
         .canvas{
             width:1000px;
@@ -47,7 +60,7 @@
         }
         .edit{
             height:650px;
-            width: 220px;
+            width: 340px;
             display: inline-block;
             position: absolute;
             user-select: none;
@@ -65,7 +78,7 @@
     <script>
         var canDraw = false;
         var drawColor="#3366CC";
-        var drawWidth="10";
+        var drawWidth="5";
         window.onload=function() {
             initDraw();
         }
@@ -154,13 +167,17 @@
             $("#canvas").unbind();
             setDrawType(events);
         }
-        function toCanvasCo(x0,y0,x1,y1) {//100 50 相对画板坐标
-            return [x0-100, y0-50, x1-100, y1-50];
+        function toCanvasCo(x0,y0,x1,y1) {//相对画板坐标
+            var x=document.getElementById("canvas").offsetLeft-7;
+            var y=document.getElementById("canvas").offsetTop-7;
+            return [x0-x, y0-y, x1-x, y1-y];
         }
     </script>
 </head>
 <body>
+<center>
 <h1>Free Page</h1>
+</center>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
     <ul class="edit">
@@ -174,8 +191,8 @@
         </li>
         <li>
             <label>Width:</label>
-            <input type="range" id="drawWidth" value="10" min="1" max="100"/>
-            <span id="viewDWidth">10</span>
+            <input type="range" id="drawWidth" value="5" min="1" max="100"/>
+            <span id="viewDWidth">5</span>
         </li>
         <li>
             <label>Color:</label>
@@ -184,7 +201,7 @@
     </ul>
 </div>
 <ul style="position: fixed;left: 0;top: 100px;">
-    <li><a href="webs/room.jsp">Room</a></li>
+    <li><h3><a href="webs/room.jsp">Room</a></h3></li>
 </ul>
 </body>
 </html>

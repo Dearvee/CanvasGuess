@@ -43,24 +43,30 @@
         body{
             width:100%;
             height: 100%;
+            color: #3366CC;
             overflow: hidden;
-            color: #666666;
-            text-shadow: 0 0 10px #ddd;
             user-select: none;
-            background: url("webs/back.png");
+            background: url("back.png");
+            margin:0;
         }
         h1{
-            display: block;
-            width: 600px;
-            height: 50px;
-            margin: 0 auto;
-            text-align: center;
-            color: #3366CC;
+            display: inline;
+            background: #333333;
+            line-height: 2em;
+            padding: 10px 20px 10px 20px;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 1px 1px 10px #333;
+            animation: h1 1s;
+            margin: 0 10px;
+        }
+        @keyframes h1 {
+            0%{padding: 10px 20px 10px 20px;}
+            50%{padding: 10px 50px 10px 50px;}
+            100%{padding: 10px 20px 10px 20px;}
         }
         .board{
             width:1000px;
-            margin: 0 100px;
-            padding: 0;
+            margin: 10px 100px;
         }
         .canvas{
             width:1000px;
@@ -72,7 +78,7 @@
         }
         .edit{
             height:650px;
-            width: 320px;
+            width: 340px;
             display: inline-block;
             position: absolute;
             user-select: none;
@@ -91,21 +97,44 @@
             bottom: 0;
         }
         .chatInfo{
-            width: inherit;
+            width: 320px;
             height: 280px;
             background: #f8f8f8;
+            line-height: 1.8em;
+            text-blink: 1em;
+            padding: 10px;
         }
         .chatEdit{
             width: inherit;
-            height: 50px;
             padding: 0;
         }
         .chatEdit input:first-child{
+            width: 253px;
+            height:38px;
             color: #3366CC;
-            font-size: 1em;
+            font-family: Lato,\"PingFang SC\",\"Microsoft YaHei\",sans-serif;
+            border-radius: 2px;
+            text-indent: 0.3em;
+            border: solid 1px #3366CC;
+        }
+        .chatEdit input:last-child{
+            width: 80px;
+            height:40px;
+            background: #333;
+            border: none;
+            font-family: Lato,"PingFang SC","Microsoft YaHei",sans-serif;
+            transition: all 0.2s;
+            border-radius: 2px;
+            cursor: pointer;
+            color: #3366CC;
+            box-shadow: 0 0 2px #333;
         }
         #userID{
-            color: #3366CC;
+            background: #333333;
+            border-radius: 2px;
+            box-shadow: 0 0 5px #333;
+            margin: 5px 10px;
+            padding: 4px;
         }
     </style>
     <script src="webs/jquery-3.2.1.min.js"></script>
@@ -162,11 +191,11 @@
             if(type==="draw")
                 drawInfo(message);
             if(type==="chat") {
-                message="[<span id='userID'>"+user+"</span>] : "+message.substring(7+user.length)+"<p/>";
+                message="<span id='userID'>"+user+"</span> : "+message.substring(7+user.length)+"<p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             if(type==="guess"){
-                message="[猜画] [<span id='userID'>"+user+"</span>] : <span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
+                message="[猜画] <span id='userID'>"+user+"</span> : <span style='background: #ffffff;padding:5px;border-radius: 5px;'>"+message.substring(8+user.length)+"</span><p/>";
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);
@@ -174,8 +203,8 @@
     </script>
     <script>
         var canDraw = false;
-        var drawColor="#000";
-        var drawWidth="10";
+        var drawColor="#3366CC";
+        var drawWidth="5";
         var coordinate="";//coordinate-坐标
 
         function initDraw() {//初始化画笔
@@ -265,8 +294,10 @@
             $("#canvas").unbind();
             setDrawType(events);
         }
-        function toCanvasCo(x0,y0,x1,y1) {//100 50 相对画板坐标
-            return [x0-100, y0-50, x1-100, y1-50];
+        function toCanvasCo(x0,y0,x1,y1) {//相对画板坐标
+            var x=document.getElementById("canvas").offsetLeft-7;
+            var y=document.getElementById("canvas").offsetTop-7;
+            return [x0-x, y0-y, x1-x, y1-y];
         }
     </script>
     <script>
@@ -290,7 +321,9 @@
     </script>
 </head>
 <body>
-<h1>Room: <%=roomID%> Owner: <%=userID%></h1>
+<center>
+    <h1>Room: <%=roomID%></h1><h1> Owner: <%=userID%></h1>
+</center>
 <div class="board">
     <canvas id="canvas" class="canvas" width="1000" height="650"></canvas>
     <ul class="edit">
@@ -304,15 +337,15 @@
         </li>
         <li>
             <label>Width:</label>
-            <input type="range" id="drawWidth" value="10" min="1" max="100"/>
-            <span id="viewDWidth">10</span>
+            <input type="range" id="drawWidth" value="5" min="1" max="100"/>
+            <span id="viewDWidth">5</span>
         </li>
         <li>
             <label>Color:</label>
-            <input type="color" id="drawColor"/>
+            <input type="color" id="drawColor" value="#3366CC"/>
         </li>
             <div class="chat">
-                <h3><%=user%> Show time~</h3>
+                <h3><%=user%></h3>
                 <div id="chatInfo" class="chatInfo" style="overflow-y: scroll;"></div>
                 <div class="chatEdit">
                     <input id="inChat" type="text" name="chatInfo" placeholder="Say"/>
