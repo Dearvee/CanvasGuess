@@ -1,9 +1,11 @@
+
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>com.vee.safe.Login</servlet-class>
@@ -30,4 +32,5 @@
     <servlet-name>setAnswer</servlet-name>
     <url-pattern>/answer</url-pattern>
   </servlet-mapping>
+
 </web-app>

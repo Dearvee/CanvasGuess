@@ -8,7 +8,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    LinkedHashMap<String,Integer> rank = MySql.rankDesc();
+    MySql mySql=new MySql();
+    LinkedHashMap<String,Integer> rank = mySql.rankDesc();
 %>
 <html>
 <head>

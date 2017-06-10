@@ -1,18 +1,43 @@
 package com.vee.sql;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Properties;
 
 /**
  * Created by Dearvee on 2017/6/2.
  */
-public class MySql {
-    public static final String driver="com.mysql.jdbc.Driver";//驱动
-    public static final String url="jdbc:mysql://localhost/canvas";
-    public static final String userSql="root";
-    public static final String passwordSql="dearvee1996";
-    public static HashMap<String,String> selectSql(String user){
+public class MySql{
+    public String driver;
+    public String url;
+    public String userSql;
+    public String passwordSql;
+
+    public MySql(){
+        String path = MySql.class.getResource("/").getPath();//获取数据库配置文件路径
+        String websiteURL = (path.replace("/build/classes", "").replace("%20"," ").replace("classes/", "") + "database.properties").replaceFirst("/", "");
+        Properties prop=new Properties();
+        System.out.println(websiteURL);
+        try {
+            InputStream inStream= new FileInputStream(new File(websiteURL));
+            prop.load(inStream);
+
+            System.out.println(prop.getProperty("password"));
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+        this.driver=prop.getProperty("driver");
+        this.url=prop.getProperty("url");
+        this.userSql=prop.getProperty("user");
+        this.passwordSql=prop.getProperty("password");
+    }
+
+    public HashMap<String,String> selectSql(String user){
         HashMap<String,String> map=new HashMap<String, String>();
         try{
             Class.forName(driver);
@@ -34,7 +59,7 @@ public class MySql {
         }
         return map;
     }
-    public static void insertSql(String user,String password,String email){
+    public void insertSql(String user,String password,String email){
         try{
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(url, userSql, passwordSql);//连接数据库
@@ -51,7 +76,7 @@ public class MySql {
         }
     }
 
-    public static void updataSql(String user){
+    public void updataSql(String user){
         try{
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(url, userSql, passwordSql);//连接数据库
@@ -68,7 +93,7 @@ public class MySql {
         }
     }
 
-    public static LinkedHashMap<String,Integer> rankDesc(){
+    public LinkedHashMap<String,Integer> rankDesc(){
         LinkedHashMap<String,Integer> map=new LinkedHashMap<String, Integer>();
         try{
             Class.forName(driver);

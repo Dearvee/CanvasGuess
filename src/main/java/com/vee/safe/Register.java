@@ -27,7 +27,9 @@ public class Register extends HttpServlet{
         String email=req.getParameter("email");
         req.setAttribute("returnRegister","");
         if(isSafe(user,password,repassword,email)) {
-            MySql.insertSql(user,password,email);
+            MySql mySql=new MySql();
+            //MySql mySql=new MySql("com.mysql.jdbc.Driver","jdbc:mysql://localhost/canvas","root","dearvee1996");
+            mySql.insertSql(user,password,email);
             System.out.println("注册成功");
             req.getRequestDispatcher("webs/login.jsp").forward(req, resp);//转发user和passwor
         }
@@ -55,7 +57,9 @@ public class Register extends HttpServlet{
             this.returnMessage="Email格式不正确！";
             return false;
         }
-        if(MySql.selectSql(user).size()!=0) {//已存在的用户
+        MySql mySql=new MySql();
+        //MySql mySql=new MySql("com.mysql.jdbc.Driver","jdbc:mysql://localhost/canvas","root","dearvee1996");
+        if(mySql.selectSql(user).size()!=0) {//已存在的用户
             this.returnMessage="已存在的用户名！";
             return false;
         }

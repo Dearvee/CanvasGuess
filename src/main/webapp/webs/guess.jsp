@@ -121,6 +121,9 @@
             color: #3366CC;
             box-shadow: 0 0 2px #333;
         }
+        .chatEdit input:not(:first-child):hover{
+            box-shadow: 0 0 10px #333;
+        }
         #userID{
             background: #333333;
             border-radius: 2px;

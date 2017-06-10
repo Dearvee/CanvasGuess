@@ -23,7 +23,6 @@ public class Login extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String user = req.getParameter("user");
         String password = req.getParameter("password");
-        String out = req.getParameter("out");
         req.setAttribute("returnLogin","");
         HttpSession session=req.getSession();//返回与当前req关联的session
         if (isTrue(user,password)) {
@@ -42,7 +41,9 @@ public class Login extends HttpServlet{
     }
     private String returnMessage="";
     private boolean isTrue(String user,String password){
-        HashMap<String,String> map= MySql.selectSql(user);//根据user查询的其他信息
+        MySql mySql=new MySql();
+        //MySql mySql=new MySql("com.mysql.jdbc.Driver","jdbc:mysql://localhost/canvas","root","dearvee1996");
+        HashMap<String,String> map= mySql.selectSql(user);//根据user查询的其他信息
         if(user.equals("")) {//用户名为空
             this.returnMessage="用户名为空！";
             return false;
