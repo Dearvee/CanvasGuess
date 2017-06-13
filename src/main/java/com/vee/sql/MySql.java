@@ -21,6 +21,8 @@ public class MySql{
         String path = MySql.class.getResource("/").getPath();//获取数据库配置文件路径
         String websiteURL = (path.replace("/build/classes", "").replace("%20"," ").replace("classes/", "") + "database.properties").replaceFirst("/", "");
         Properties prop=new Properties();
+        if(System.getProperty("os.name").equals("linux")||System.getProperty("os.name").equals("Linux"))
+            websiteURL="/"+websiteURL;
         System.out.println(websiteURL);
         try {
             InputStream inStream= new FileInputStream(new File(websiteURL));

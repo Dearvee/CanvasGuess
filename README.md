@@ -27,3 +27,5 @@ it is a canvas in html5。（当然，作为jsp课程作业，后来多少是要
 ![image](https://github.com/Dearvee/CanvasGuess/raw/master/explainImag/5.gif)
 ### 6.从CopyOnWriteArraySet<WebSocket>到HashMap<Integer,CopyOnWriteArraySet<WebSocket>> 
 ###### 此类型的改变 ，增加了多放房间操作功能，每个房间对应一个CopyOnWriteArraySet<WebSocket>
+### 7.兼容Linux,Win部署,添加lib库
+###### 判断操作系统，找到数据库配置文件路径。从而兼容Linux.添加lib文件夹，导入链接mysql的jar包，简化部署。
