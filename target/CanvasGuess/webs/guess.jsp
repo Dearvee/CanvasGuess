@@ -28,111 +28,9 @@
 <head>
     <meta charset="utf-8"/>
     <title>Guess Page</title>
-    <style>
-        html{
-            width: 100%;
-            height: 100%;
-        }
-        body{
-            width:100%;
-            height: 100%;
-            overflow: hidden;
-            color: #3366CC;
-            user-select: none;
-            background: url("back.png");
-            margin:0;
-        }
-        h1{
-            display: inline;
-            background: #333333;
-            line-height: 2em;
-            padding: 10px 20px 10px 20px;
-            border-radius: 0 0 5px 5px;
-            box-shadow: 1px 1px 10px #333;
-            animation: h1 1s;
-            margin: 0 10px;
-        }
-        @keyframes h1 {
-            0%{padding: 10px 20px 10px 20px;}
-            50%{padding: 10px 50px 10px 50px;}
-            100%{padding: 10px 20px 10px 20px;}
-        }
-        .board{
-            width:1000px;
-            margin: 10px 100px;
-        }
-        .canvas{
-            width:1000px;
-            height:650px;
-            background: #eee;
-            float: left;
-            box-shadow: 2px 2px 10px #ddd;
-        }
-        .edit{
-            height:650px;
-            width: 340px;
-            display: inline-block;
-            position: absolute;
-            user-select: none;
-            padding: 0;
-            margin: 0 10px;
-            border: 2px #eeeeee solid;
-            list-style: none;
-            box-shadow: 0 0 10px #ddd;
-        }
-        .edit li{
-            padding: 5px;
-        }
-        .chat{
-            width: inherit;
-            position: absolute;
-            bottom: 0;
-        }
-        .chatInfo{
-            width: 320px;
-            height: 280px;
-            background: #f8f8f8;
-            line-height: 1.8em;
-            text-blink: 1em;
-            padding: 10px;
-        }
-        .chatEdit{
-            width: inherit;
-            padding: 0;
-        }
-        .chatEdit input:first-child{
-            width: 168px;
-            height:38px;
-            color: #3366CC;
-            font-family: Lato,\"PingFang SC\",\"Microsoft YaHei\",sans-serif;
-            border-radius: 2px;
-            text-indent: 0.3em;
-            border: solid 1px #3366CC;
-        }
-        .chatEdit input:not(:first-child){
-            width: 80px;
-            height:40px;
-            background: #333;
-            border: none;
-            font-family: Lato,"PingFang SC","Microsoft YaHei",sans-serif;
-            transition: all 0.2s;
-            border-radius: 2px;
-            cursor: pointer;
-            color: #3366CC;
-            box-shadow: 0 0 2px #333;
-        }
-        .chatEdit input:not(:first-child):hover{
-            box-shadow: 0 0 10px #333;
-        }
-        #userID{
-            background: #333333;
-            border-radius: 2px;
-            box-shadow: 0 0 5px #333;
-            margin: 5px 10px;
-            padding: 4px;
-        }
-    </style>
-    <script src="jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/guess.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/guess.js"></script>
     <script type="text/javascript">
         var websocket = null;
 
@@ -200,52 +98,6 @@
                 $("#chatInfo").html($("#chatInfo").html() + message);
             }
             $("#chatInfo").scrollTop($("#chatInfo")[0].scrollHeight);//滑动滚动条到最底部
-        }
-    </script>
-    <script>
-        var drawColor="#fff";
-        var drawWidth="10";
-
-        function draw(x0, y0, x1, y1) {//画直线
-            var co=toCanvasCo(x0,y0,x1,y1);
-            x0=co[0];y0=co[1];x1=co[2];y1=co[3];
-            var canvas = document.getElementById("canvas");
-            var ctx = canvas.getContext("2d");
-            ctx.lineWidth = drawWidth;
-            ctx.strokeStyle = drawColor;
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(x0, y0);
-            ctx.lineTo(x1, y1);
-            ctx.stroke();
-            ctx.closePath();
-        }
-
-        function drawInfo(info) {
-            var strokes=info.split("*");//每一笔
-            for(var i=0;i<strokes.length;i++){
-                var operate=strokes[i].split("+");//每一笔的属性,包括color，width，coordinate
-                drawColor=operate[0].substring(5);
-                drawWidth=operate[1];
-                var co=coToArray(operate[2]);
-                draw(co[0],co[1],co[2],co[3]);
-            }
-        }
-        function coToArray(coordinate) {
-            var coors=coordinate.match(/\(\d+,\d+\)/g);
-            var co0,co1;
-            co0=[coors[0].split(",")[0].substr(1),
-                coors[0].split(",")[1].
-                substr(0,coors[0].split(",")[1].length-1)];
-            co1=[coors[1].split(",")[0].substr(1),
-                coors[1].split(",")[1].
-                substr(0,coors[1].split(",")[1].length-1)];
-            return [co0[0],co0[1],co1[0],co1[1]];
-        }
-        function toCanvasCo(x0,y0,x1,y1) {//相对画板坐标
-            var x=document.getElementById("canvas").offsetLeft-7;
-            var y=document.getElementById("canvas").offsetTop-7;
-            return [x0-x, y0-y, x1-x, y1-y];
         }
     </script>
     <script>
