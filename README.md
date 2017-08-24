@@ -1,5 +1,49 @@
-# canvas
-it is a canvas in html5。（当然，作为jsp课程作业，后来多少是要点java）
+# CanvasGuess
+it is a canvas in html5。
+
+# Environment
+
+* Ubuntu16.04/win7
+
+* Tomcat7.0
+
+* jdk1.8
+
+* IDEA
+
+# Instruction
+
+#### Database:
+
+* creat database and table:
+
+
+		CREATE TABLE canvas.logininfo (
+			user varchar(100) NOT NULL,
+			password varchar(100) NOT NULL,
+			email varchar(100) NOT NULL,
+			flower BIGINT DEFAULT 0 NULL
+		)
+		ENGINE=InnoDB
+		DEFAULT CHARSET=utf8
+		COLLATE=utf8_general_ci ;
+
+
+* seting database info:
+
+
+		driver=com.mysql.jdbc.Driver
+		url=jdbc:mysql://localhost/canvas
+		user=root
+		password=dearvee1996
+
+
+
+-----------------------------
+
+
+
+# Process
 
 ### 初步思路
 ###### 关于画板的思路，我想应该很大程度上来自于原来做的一个控件流畅拖动效果中，对鼠标事件mouseover,mousedown,mousemove,mouseup,mouseout的剖析.让鼠标在画板上画出线条，无非就是在mousedown的前提下，触发mousemove事件时，用html5画笔画出自mousedown坐标至事件mousemove坐标的线条(以直代曲)，当然后期线条的颜色，也是可以通过input color供选择的。
